@@ -9,24 +9,20 @@ function QuizButton() {
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-4xl px-6 py-16">
-        <header>
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <section>
           <p className="text-sm font-medium text-gray-500">
             Japanese Learning Service
           </p>
 
-          <h1 className="mt-3 text-4xl font-bold text-gray-900">
-            ことばループ
-          </h1>
+          <h2 className="mt-2 text-3xl font-bold text-gray-900">
+            오늘도 일본어 표현을 복습해볼까요?
+          </h2>
 
-          <p className="mt-4 text-lg text-gray-600">
-            저장한 일본어 표현을 다시 떠올리고,
-            직접 사용하는 학습 서비스
+          <p className="mt-4 text-gray-600">
+            저장한 표현을 다시 떠올리고 직접 사용해보세요.
           </p>
-        </header>
-
-        <section className="mt-12">
-          <QuizButton />
+          <QuizButton></QuizButton>
         </section>
       </div>
     </main>
