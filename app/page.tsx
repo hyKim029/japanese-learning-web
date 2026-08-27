@@ -1,3 +1,7 @@
+import StudySummary from "@/components/StudySummary";
+import QuizStartCard from "@/components/QuizStartCard";
+import RecentExpressions from "@/components/RecentExpressions";
+
 function QuizButton() {
   return (
     <button className="rounded-lg bg-black px-6 py-3 font-medium text-white">
@@ -7,6 +11,23 @@ function QuizButton() {
 }
 
 export default function Home() {
+  const recentExpressions = [
+    {
+      japanese: "立ち止まる",
+      meaning: "멈춰 서다",
+      isCorrect: false,
+    },
+    {
+      japanese: "気をつける",
+      meaning: "조심하다",
+      isCorrect: true,
+    },
+    {
+      japanese: "思い込む",
+      meaning: "굳게 믿다",
+      isCorrect: false,
+    },
+  ];
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -16,14 +37,25 @@ export default function Home() {
           </p>
 
           <h2 className="mt-2 text-3xl font-bold text-gray-900">
-            오늘도 일본어 표현을 복습해볼까요?
+            오늘도 일본어를 공부해볼까요?
           </h2>
 
           <p className="mt-4 text-gray-600">
             저장한 표현을 다시 떠올리고 직접 사용해보세요.
           </p>
-          <QuizButton></QuizButton>
         </section>
+
+        <div className="mt-10">
+          <StudySummary
+            reviewCount={12}
+            completedCount={8}
+          />
+        </div>
+
+        <div className="mt-6">
+          <QuizStartCard/>
+          <RecentExpressions expressions={recentExpressions} />
+        </div>
       </div>
     </main>
   );
