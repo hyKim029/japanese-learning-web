@@ -1,6 +1,7 @@
 import StudySummary from "@/components/StudySummary";
 import QuizStartCard from "@/components/QuizStartCard";
 import RecentExpressions from "@/components/RecentExpressions";
+import Link from "next/link";
 
 function QuizButton() {
   return (
@@ -54,6 +55,12 @@ export default function Home() {
 
         <div className="mt-6">
           <QuizStartCard/>
+          <Link
+            href="/expressions/new"
+            className="inline-block rounded-lg border bg-white px-5 py-3 font-medium text-gray-900"
+          >
+            표현 추가
+          </Link>
           <RecentExpressions expressions={recentExpressions} />
         </div>
       </div>
