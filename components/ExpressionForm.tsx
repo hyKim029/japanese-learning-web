@@ -8,23 +8,37 @@ export default function ExpressionForm() {
   const [memo, setMemo] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (japanese.trim() === "") {
+      setError("일본어 표현을 입력해주세요.");
+      return;
+    }
 
+    if (meaning.trim() === "") {
+      setError("뜻을 입력해주세요.");
+      return;
+    }
     const parsedTags = tagInput
       .split(",")
       .map((tag) => tag.trim())
       .filter((tag) => tag !== "");
       
-    console.log("변환된 배열:", parsedTags);
-    console.log("tags state:", tags);
+    if (parsedTags.length === 0) {
+      setError("태그를 하나 이상 입력해주세요.");
+      return;
+    }
+    setError("");
+    const expression = {
+      japanese,
+      meaning,
+      memo,
+      tags: parsedTags,
+    };
 
-    console.log(japanese);
-    console.log(meaning);
-    console.log(memo);
-    console.log(tags);
-    console.log(tagInput);
+    console.log(expression);
   }
 
   return (
@@ -104,7 +118,12 @@ export default function ExpressionForm() {
           </span>
         ))}
       </div>
-
+      
+      {error && (
+        <p className="mt-2 text-sm font-medium text-red-500">
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         className="w-full rounded-lg bg-black px-6 py-3 font-medium text-white"
