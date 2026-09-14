@@ -1,6 +1,18 @@
+"use client";
 import ExpressionForm from "@/components/ExpressionForm";
 
+type Expression = {
+  japanese: string;
+  meaning: string;
+  memo: string;
+  tags: string[];
+};
+
 export default function NewExpressionPage() {
+  function handleExpressionSubmit(expression: Expression) {
+    console.log("부모가 받은 데이터:", expression);
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-2xl px-6 py-12">
@@ -18,7 +30,7 @@ export default function NewExpressionPage() {
           </p>
         </div>
 
-        <ExpressionForm />
+        <ExpressionForm onSubmit={handleExpressionSubmit} />
       </div>
     </main>
   );

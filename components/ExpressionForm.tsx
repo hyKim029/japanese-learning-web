@@ -2,7 +2,18 @@
 
 import { useState } from "react";
 
-export default function ExpressionForm() {
+type Expression = {
+  japanese: string;
+  meaning: string;
+  memo: string;
+  tags: string[];
+};
+
+type ExpressionFormProps = {
+  onSubmit: (expression: Expression) => void;
+};
+
+export default function ExpressionForm(props: ExpressionFormProps) {
   const [japanese, setJapanese] = useState("");
   const [meaning, setMeaning] = useState("");
   const [memo, setMemo] = useState("");
@@ -38,7 +49,7 @@ export default function ExpressionForm() {
       tags: parsedTags,
     };
 
-    console.log(expression);
+    props.onSubmit(expression);
   }
 
   return (
