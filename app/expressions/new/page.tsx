@@ -1,5 +1,7 @@
 "use client";
+import { useState } from "react";
 import ExpressionForm from "@/components/ExpressionForm";
+
 
 type Expression = {
   japanese: string;
@@ -9,8 +11,11 @@ type Expression = {
 };
 
 export default function NewExpressionPage() {
+  const [savedExpression, setSavedExpression] = useState<Expression | null>(null);
+
   function handleExpressionSubmit(expression: Expression) {
-    console.log("부모가 받은 데이터:", expression);
+    setSavedExpression(expression);
+
   }
 
   return (
@@ -28,8 +33,19 @@ export default function NewExpressionPage() {
           <p className="mt-3 text-gray-600">
             다시 학습하고 싶은 일본어 표현을 저장하세요.
           </p>
-        </div>
+              {savedExpression !== null && (
+                <div>
+                  <p>{savedExpression.japanese}</p>
+                  <p>{savedExpression.meaning}</p>
+                  <p>{savedExpression.memo}</p>
 
+                  {savedExpression.tags.map((tag) => (
+                    <p key={tag}>{tag}</p>
+                  ))}
+                </div>
+              )}
+        </div>
+        
         <ExpressionForm onSubmit={handleExpressionSubmit} />
       </div>
     </main>
