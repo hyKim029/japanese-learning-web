@@ -20,6 +20,7 @@ export default function ExpressionForm(props: ExpressionFormProps) {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,6 +51,16 @@ export default function ExpressionForm(props: ExpressionFormProps) {
     };
 
     props.onSubmit(expression);
+
+    setMessage("저장이 완료되었습니다");
+    setTimeout(() => {
+      setMessage("");
+    }, 2000);
+
+    setJapanese("");
+    setMeaning("");
+    setMemo("");
+    setTagInput("");
   }
 
   return (
@@ -135,13 +146,17 @@ export default function ExpressionForm(props: ExpressionFormProps) {
           {error}
         </p>
       )}
+      
+      <div>
+        <p>{message}</p>
+      </div>
+
       <button
         type="submit"
         className="w-full rounded-lg bg-black px-6 py-3 font-medium text-white"
       >
         저장하기
       </button>
-
 
     </form>
   );
