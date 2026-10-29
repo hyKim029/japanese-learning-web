@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Expression = {
   japanese: string;
@@ -21,6 +21,20 @@ export default function ExpressionForm(props: ExpressionFormProps) {
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (message.trim() === "") {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setMessage("");
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [message]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -53,9 +67,6 @@ export default function ExpressionForm(props: ExpressionFormProps) {
     props.onSubmit(expression);
 
     setMessage("저장이 완료되었습니다");
-    setTimeout(() => {
-      setMessage("");
-    }, 2000);
 
     setJapanese("");
     setMeaning("");
