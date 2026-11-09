@@ -10,7 +10,7 @@ type Expression = {
 };
 
 type ExpressionFormProps = {
-  onSubmit: (expression: Expression) => void;
+  onSubmit: (expression: Expression) => Promise<boolean>;
 };
 
 export default function ExpressionForm(props: ExpressionFormProps) {
@@ -21,6 +21,7 @@ export default function ExpressionForm(props: ExpressionFormProps) {
   const [tagInput, setTagInput] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (message.trim() === "") {
@@ -36,8 +37,12 @@ export default function ExpressionForm(props: ExpressionFormProps) {
     };
   }, [message]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
     e.preventDefault();
+
     if (japanese.trim() === "") {
       setError("일본어 표현을 입력해주세요.");
       return;
@@ -47,16 +52,20 @@ export default function ExpressionForm(props: ExpressionFormProps) {
       setError("뜻을 입력해주세요.");
       return;
     }
+
     const parsedTags = tagInput
       .split(",")
       .map((tag) => tag.trim())
       .filter((tag) => tag !== "");
-      
+
     if (parsedTags.length === 0) {
       setError("태그를 하나 이상 입력해주세요.");
       return;
     }
+
     setError("");
+    setMessage("");
+
     const expression = {
       japanese,
       meaning,
@@ -64,9 +73,23 @@ export default function ExpressionForm(props: ExpressionFormProps) {
       tags: parsedTags,
     };
 
-    props.onSubmit(expression);
+    // 부모에게 저장 요청하고 결과 기다리기
+    let success = false;
 
-    setMessage("저장이 완료되었습니다");
+    try {
+      success = await props.onSubmit(expression);
+    } catch (err) {
+      console.error("저장 요청 오류:", err);
+    } finally {
+      setIsSaving(false);
+    }  
+    if (!success) {
+      setError("저장에 실패했습니다. 로그인 상태와 연결을 확인해주세요.");
+      return;
+    }
+
+    // DB 저장이 성공한 경우에만 실행
+    setMessage("저장이 완료되었습니다.");
 
     setJapanese("");
     setMeaning("");
@@ -164,11 +187,11 @@ export default function ExpressionForm(props: ExpressionFormProps) {
 
       <button
         type="submit"
-        className="w-full rounded-lg bg-black px-6 py-3 font-medium text-white"
+        disabled={isSaving}
+        className="w-full rounded-lg bg-black px-6 py-3 font-medium text-white disabled:opacity-50"
       >
-        저장하기
+        {isSaving ? "저장 중..." : "저장하기"}
       </button>
-
     </form>
   );
 }
